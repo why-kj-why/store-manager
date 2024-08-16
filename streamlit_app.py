@@ -132,7 +132,7 @@ st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 #Subheader
 st.markdown("""
     <h4 style="background-color: {}; color: black; padding: 10px;">
-        Store Ops App
+        Store Management App
     </h4>
 """.format(CLAIRE_MAUVE), unsafe_allow_html=True)
 
