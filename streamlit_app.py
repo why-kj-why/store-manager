@@ -1,4 +1,5 @@
-from llama_index.legacy.llms.azure_openai import AzureOpenAI
+# from llama_index.legacy.llms.azure_openai import AzureOpenAI
+from base import AzureOpenAI
 import streamlit as st
 import pandas as pd
 import pymysql
