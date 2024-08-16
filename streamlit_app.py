@@ -2,10 +2,9 @@ import streamlit as st
 import pandas as pd
 import pymysql
 import plotly.express as px
-from llama_index.legacy.llms.azure_openai import AzureOpenAI
 import nltk
-
 nltk.download('stopwords', download_dir = 'nltk_data')
+from llama_index.legacy.llms.azure_openai import AzureOpenAI
 
 DB_HOST = "tellmoredb.cd24ogmcy170.us-east-1.rds.amazonaws.com"
 DB_USER = "admin"
