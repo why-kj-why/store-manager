@@ -2,19 +2,6 @@ import streamlit as st
 import pandas as pd
 import pymysql
 import plotly.express as px
-import nltk
-import os
-
-# Assuming your nltk_data directory is in the same directory as your script
-nltk_data_dir = os.path.join(os.path.dirname(__file__), 'nltk_data')
-
-# Ensure the directory exists
-if not os.path.exists(nltk_data_dir):
-    os.makedirs(nltk_data_dir)
-
-# Append the directory to NLTK's data path
-nltk.data.path.append(nltk_data_dir)
-
 from llama_index.legacy.llms.azure_openai import AzureOpenAI
 
 DB_HOST = "tellmoredb.cd24ogmcy170.us-east-1.rds.amazonaws.com"
