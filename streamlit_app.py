@@ -4,8 +4,10 @@ import pymysql
 import plotly.express as px
 import nltk
 import os
+import llama_index.legacy
 nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
 os.makedirs(nltk_data_path, exist_ok=True)
+llama_index.legacy._static.nltk_cache = nltk_data_path
 nltk.data.path.append(nltk_data_path)
 nltk.download('stopwords', download_dir=nltk_data_path)
 from llama_index.legacy.llms.azure_openai import AzureOpenAI
