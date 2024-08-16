@@ -3,7 +3,11 @@ import pandas as pd
 import pymysql
 import plotly.express as px
 import nltk
-nltk.download('stopwords', download_dir = 'nltk_data')
+import os
+nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
+os.makedirs(nltk_data_path, exist_ok=True)
+nltk.data.path.append(nltk_data_path)
+nltk.download('stopwords', download_dir=nltk_data_path)
 from llama_index.legacy.llms.azure_openai import AzureOpenAI
 
 DB_HOST = "tellmoredb.cd24ogmcy170.us-east-1.rds.amazonaws.com"
