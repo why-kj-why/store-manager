@@ -11,6 +11,10 @@ DB_PORT = "3306"
 DB_NAME = "retail_panopticon"
 CONVO_DB_NAME = "store_questions"
 
+#Declaring Colours
+CLAIRE_DEEP_PURPLE = '#553D94'
+CLAIRE_MAUVE = '#D2BBFF'
+
 # AZURE_OPENAI_KEY = "94173b7e3f284f2c8f8eb1804fa55699"
 # AZURE_OPENAI_ENDPOINT = "https://tellmoredemogpt.openai.azure.com/"
 # AZURE_OPENAI_ENGINE = "tellmore-demo-gpt35"
@@ -60,21 +64,88 @@ def get_queries_from_db():
 
 st.set_page_config(layout='wide', initial_sidebar_state='collapsed')
 
+def set_custom_css():
+    """
+    This function is used to set the custom CSS properties.
+    
+    Existing Functionality:
+
+    1. Center align the Query Result table.
+
+    Features to Add:
+
+    1. Shorten the drop down menu
+    2.Try and reduce the space between elements.
+
+    """
+    # Custom CSS to center-align the dataframe
+    custom_css = """
+    <style>
+    
+        .st-emotion-cache-9aoz2h.e1vs0wn30 {
+            display: flex;
+            justify-content: center; /* Center-align the DataFrame */
+        }
+        .st-emotion-cache-9aoz2h.e1vs0wn30 table {
+            margin: 0 auto; /* Center-align the table itself */
+        }
+        
+    </style>
+    """
+    # Inject the CSS
+    st.markdown(custom_css, unsafe_allow_html=True)
+
+set_custom_css()
+
+#Load the logo 
+
+with open(r'Claires_logo.svg', 'r') as image:
+    image_data = image.read()
+    
+    
+st.logo(image=image_data)
+
+# Claire Purple top bar on Top.
+st.markdown("""
+<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100px; background-color: {}; z-index: 1000;">
+</div>
+""".format(CLAIRE_DEEP_PURPLE), unsafe_allow_html=True)
+
 queries = get_queries_from_db()
 
 result = None
 
-col = st.columns((2, 1, 1), gap='medium')
+# col = st.columns((2, 1, 1), gap='medium')
 
-with col[0]:
-    st.markdown("#### North Riverside Park Mall, Store001")
-    st.markdown("#### Store Ops App")
+st.markdown("""
+    <h4 style="background-color: {}; color: white; padding: 10px;">
+        North Riverside Park Mall, Store001
+    </h4>
+""".format(CLAIRE_DEEP_PURPLE), unsafe_allow_html=True)
 
-    selected_query = st.selectbox("Select a query", list(queries.keys()))
-    if selected_query and selected_query != "Select a query":
-        query_sql = queries[selected_query]
-        conn = connect_to_db(DB_NAME)
-        result = execute_query(query_sql, conn)
+#Adding Padding
+st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+
+#st.markdown("#### Store Ops App")
+#Subheader
+st.markdown("""
+    <h4 style="background-color: {}; color: black; padding: 10px;">
+        Store Ops App
+    </h4>
+""".format(CLAIRE_MAUVE), unsafe_allow_html=True)
+
+st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+# with col[0]:
+#     st.markdown("#### North Riverside Park Mall, Store001")
+#     st.markdown("#### Store Ops App")
+
+selected_query = st.selectbox("Select a query", list(queries.keys()))
+if selected_query and selected_query != "Select a query":
+    query_sql = queries[selected_query]
+    conn = connect_to_db(DB_NAME)
+    result = execute_query(query_sql, conn)
         # language_prompt = f"""
         #     following is a business question: {selected_query}\n
         #     columns from an enterprise database schema were identified to answer this question\n
@@ -87,61 +158,61 @@ with col[0]:
         # ans = llm.complete(language_prompt)
         # ans = ans.text
         # st.markdown(ans)
-        st.markdown("The data table returned provides information about regular customers aged over 50 who have spent more than 15000. It includes columns such as Customer_ID, Customer_Name, Age, and Total_Spent. The table consists of 780 rows, each representing a different customer. The Customer_ID column contains unique identifiers for each customer. The Customer_Name column displays the names of the customers. The Age column indicates the age of each customer. The Total_Spent column shows the amount of money each customer has spent. The table includes details of customers who meet the criteria specified in the business question, such as Amy Marsh, Tabitha Graves, Christopher Campbell, Sandra Jacobs, Pamela Brooks, and many others.")
-        st.dataframe(result, height=200)
+    st.markdown("The data table returned provides information about regular customers aged over 50 who have spent more than 15000. It includes columns such as Customer_ID, Customer_Name, Age, and Total_Spent. The table consists of 780 rows, each representing a different customer. The Customer_ID column contains unique identifiers for each customer. The Customer_Name column displays the names of the customers. The Age column indicates the age of each customer. The Total_Spent column shows the amount of money each customer has spent. The table includes details of customers who meet the criteria specified in the business question, such as Amy Marsh, Tabitha Graves, Christopher Campbell, Sandra Jacobs, Pamela Brooks, and many others.")
+    st.dataframe(result, height=300)
 
-with col[1]:
-    if result is not None and not result.empty:
-        st.subheader("Visualizations")
+# with col[1]:
+#     if result is not None and not result.empty:
+#         st.subheader("Visualizations")
 
-        if selected_query == "List the allocation strategies for products with the 30 lowest inventory turnover rates":
-            turnover_by_strategy = result.groupby('Inventory_Allocation_Strategy')[
-                'Inventory_Monthly_Turnover_Rate'].sum().reset_index()
+#         if selected_query == "List the allocation strategies for products with the 30 lowest inventory turnover rates":
+#             turnover_by_strategy = result.groupby('Inventory_Allocation_Strategy')[
+#                 'Inventory_Monthly_Turnover_Rate'].sum().reset_index()
 
-            bar_fig_turnover = px.bar(
-                turnover_by_strategy,
-                x='Inventory_Allocation_Strategy',
-                y='Inventory_Monthly_Turnover_Rate',
-                title='Sum of Inventory Turnover Rates by Allocation Strategy',
-            )
+#             bar_fig_turnover = px.bar(
+#                 turnover_by_strategy,
+#                 x='Inventory_Allocation_Strategy',
+#                 y='Inventory_Monthly_Turnover_Rate',
+#                 title='Sum of Inventory Turnover Rates by Allocation Strategy',
+#             )
 
-            st.markdown('<div class="plotly-container">', unsafe_allow_html=True)
-            st.plotly_chart(bar_fig_turnover)
-            st.markdown('</div>', unsafe_allow_html=True)
+#             st.markdown('<div class="plotly-container">', unsafe_allow_html=True)
+#             st.plotly_chart(bar_fig_turnover)
+#             st.markdown('</div>', unsafe_allow_html=True)
 
-    else:
-        st.write("Please select a query from the dropdown menu.")
+#     else:
+#         st.write("Please select a query from the dropdown menu.")
 
-with col[2]:
-    if result is not None and not result.empty:
-        st.subheader("")
+# with col[2]:
+#     if result is not None and not result.empty:
+#         st.subheader("")
 
-        if selected_query == "List the allocation strategies for products with the 30 lowest inventory turnover rates":
-            safety_stock_by_strategy = result.groupby('Inventory_Allocation_Strategy')[
-                'Safety_Stock_Levels'].sum().reset_index()
+#         if selected_query == "List the allocation strategies for products with the 30 lowest inventory turnover rates":
+#             safety_stock_by_strategy = result.groupby('Inventory_Allocation_Strategy')[
+#                 'Safety_Stock_Levels'].sum().reset_index()
 
-            bar_fig_safety_stock = px.bar(
-                safety_stock_by_strategy,
-                x='Inventory_Allocation_Strategy',
-                y='Safety_Stock_Levels',
-                title='Sum of Safety Stock Levels by Allocation Strategy',
-            )
+#             bar_fig_safety_stock = px.bar(
+#                 safety_stock_by_strategy,
+#                 x='Inventory_Allocation_Strategy',
+#                 y='Safety_Stock_Levels',
+#                 title='Sum of Safety Stock Levels by Allocation Strategy',
+#             )
 
-            bar_fig_turnover.update_layout(
-                autosize=True,
-                title={
-                    'text': """Sum of Inventory Turnover Rates 
-                        by Allocation Strategy""",
-                    'x': 0.5,
-                    'xanchor': 'center',
-                    'yanchor': 'top'
-                },
-                title_font=dict(size=14),
-                margin=dict(l=0, r=0, t=40, b=0)
-            )
-            st.markdown('<div class="plotly-container">', unsafe_allow_html=True)
-            st.plotly_chart(bar_fig_safety_stock)
-            st.markdown('</div>', unsafe_allow_html=True)
+#             bar_fig_turnover.update_layout(
+#                 autosize=True,
+#                 title={
+#                     'text': """Sum of Inventory Turnover Rates 
+#                         by Allocation Strategy""",
+#                     'x': 0.5,
+#                     'xanchor': 'center',
+#                     'yanchor': 'top'
+#                 },
+#                 title_font=dict(size=14),
+#                 margin=dict(l=0, r=0, t=40, b=0)
+#             )
+#             st.markdown('<div class="plotly-container">', unsafe_allow_html=True)
+#             st.plotly_chart(bar_fig_safety_stock)
+#             st.markdown('</div>', unsafe_allow_html=True)
 
     else:
         pass
