@@ -1,5 +1,4 @@
 # from llama_index.legacy.llms.azure_openai import AzureOpenAI
-from base import AzureOpenAI
 import streamlit as st
 import pandas as pd
 import pymysql
@@ -12,21 +11,21 @@ DB_PORT = "3306"
 DB_NAME = "retail_panopticon"
 CONVO_DB_NAME = "store_questions"
 
-AZURE_OPENAI_KEY = "94173b7e3f284f2c8f8eb1804fa55699"
-AZURE_OPENAI_ENDPOINT = "https://tellmoredemogpt.openai.azure.com/"
-AZURE_OPENAI_ENGINE = "tellmore-demo-gpt35"
-AZURE_OPENAI_MODEL_NAME = "gpt-3.5-turbo-0125"
-AZURE_OPENAI_TYPE = "azure"
+# AZURE_OPENAI_KEY = "94173b7e3f284f2c8f8eb1804fa55699"
+# AZURE_OPENAI_ENDPOINT = "https://tellmoredemogpt.openai.azure.com/"
+# AZURE_OPENAI_ENGINE = "tellmore-demo-gpt35"
+# AZURE_OPENAI_MODEL_NAME = "gpt-3.5-turbo-0125"
+# AZURE_OPENAI_TYPE = "azure"
 
-llm = AzureOpenAI(
-    model=AZURE_OPENAI_MODEL_NAME,
-    engine=AZURE_OPENAI_ENGINE,
-    api_key=AZURE_OPENAI_KEY,
-    azure_endpoint=AZURE_OPENAI_ENDPOINT,
-    api_type=AZURE_OPENAI_TYPE,
-    api_version="2024-03-01-preview",
-    temperature=0.3,
-)
+# llm = AzureOpenAI(
+#     model=AZURE_OPENAI_MODEL_NAME,
+#     engine=AZURE_OPENAI_ENGINE,
+#     api_key=AZURE_OPENAI_KEY,
+#     azure_endpoint=AZURE_OPENAI_ENDPOINT,
+#     api_type=AZURE_OPENAI_TYPE,
+#     api_version="2024-03-01-preview",
+#     temperature=0.3,
+# )
 
 
 def connect_to_db(db_name):
@@ -76,18 +75,19 @@ with col[0]:
         query_sql = queries[selected_query]
         conn = connect_to_db(DB_NAME)
         result = execute_query(query_sql, conn)
-        language_prompt = f"""
-            following is a business question: {selected_query}\n
-            columns from an enterprise database schema were identified to answer this question\n
-            upon querying the columns, the following SQL data table was returned: {result}\n
-            generate a natural language response explaining the data table that was 
-            returned, with the business question as context\n
-            respond only with the natural language explanation of the data table output, do not explain the 
-            business question or how the columns were selected and queried\n
-        """
-        ans = llm.complete(language_prompt)
-        ans = ans.text
-        st.markdown(ans)
+        # language_prompt = f"""
+        #     following is a business question: {selected_query}\n
+        #     columns from an enterprise database schema were identified to answer this question\n
+        #     upon querying the columns, the following SQL data table was returned: {result}\n
+        #     generate a natural language response explaining the data table that was 
+        #     returned, with the business question as context\n
+        #     respond only with the natural language explanation of the data table output, do not explain the 
+        #     business question or how the columns were selected and queried\n
+        # """
+        # ans = llm.complete(language_prompt)
+        # ans = ans.text
+        # st.markdown(ans)
+        st.markdown("The data table returned provides information about regular customers aged over 50 who have spent more than 15000. It includes columns such as Customer_ID, Customer_Name, Age, and Total_Spent. The table consists of 780 rows, each representing a different customer. The Customer_ID column contains unique identifiers for each customer. The Customer_Name column displays the names of the customers. The Age column indicates the age of each customer. The Total_Spent column shows the amount of money each customer has spent. The table includes details of customers who meet the criteria specified in the business question, such as Amy Marsh, Tabitha Graves, Christopher Campbell, Sandra Jacobs, Pamela Brooks, and many others.")
         st.dataframe(result, height=200)
 
 with col[1]:
