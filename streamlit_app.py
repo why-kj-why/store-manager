@@ -4,11 +4,20 @@ import pymysql
 import plotly.express as px
 import nltk
 import os
-import llama_index.legacy
-nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
+
+# Set environment variable for NLTK data path
+nltk_data_path = os.path.join('/tmp', 'nltk_data')
+os.environ['NLTK_DATA'] = nltk_data_path
+
+# Create the directory if it doesn't exist
 os.makedirs(nltk_data_path, exist_ok=True)
-llama_index.legacy._static.nltk_cache = nltk_data_path
+
+# Now, NLTK should download and use data from this path
+nltk.download('stopwords', download_dir=nltk_data_path)
+
+# Ensure NLTK uses this path
 nltk.data.path.append(nltk_data_path)
+
 nltk.download('stopwords', download_dir=nltk_data_path)
 from llama_index.legacy.llms.azure_openai import AzureOpenAI
 
