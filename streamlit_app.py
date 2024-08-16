@@ -5,8 +5,15 @@ import plotly.express as px
 import nltk
 import os
 
-nltk_data_path = os.path.join(os.getcwd(), 'nltk_data')
-nltk.data.path.append(nltk_data_path)
+# Assuming your nltk_data directory is in the same directory as your script
+nltk_data_dir = os.path.join(os.path.dirname(__file__), 'nltk_data')
+
+# Ensure the directory exists
+if not os.path.exists(nltk_data_dir):
+    os.makedirs(nltk_data_dir)
+
+# Append the directory to NLTK's data path
+nltk.data.path.append(nltk_data_dir)
 
 from llama_index.legacy.llms.azure_openai import AzureOpenAI
 
