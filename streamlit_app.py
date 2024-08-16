@@ -214,5 +214,5 @@ if selected_query and selected_query != "Select a query":
 #             st.plotly_chart(bar_fig_safety_stock)
 #             st.markdown('</div>', unsafe_allow_html=True)
 
-    else:
-        pass
+else:
+    pass
