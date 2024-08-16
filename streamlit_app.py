@@ -8,7 +8,8 @@ DB_HOST = "tellmoredb.cd24ogmcy170.us-east-1.rds.amazonaws.com"
 DB_USER = "admin"
 DB_PASS = "2yYKKH8lUzaBvc92JUxW"
 DB_PORT = "3306"
-DB_NAME = "retail_panopticon"
+# DB_NAME = "retail_panopticon"
+DB_NAME = "claires_data"
 CONVO_DB_NAME = "store_questions"
 
 #Declaring Colours
@@ -158,7 +159,14 @@ if selected_query and selected_query != "Select a query":
         # ans = llm.complete(language_prompt)
         # ans = ans.text
         # st.markdown(ans)
-    st.markdown("The data table returned provides information about regular customers aged over 50 who have spent more than 15000. It includes columns such as Customer_ID, Customer_Name, Age, and Total_Spent. The table consists of 780 rows, each representing a different customer. The Customer_ID column contains unique identifiers for each customer. The Customer_Name column displays the names of the customers. The Age column indicates the age of each customer. The Total_Spent column shows the amount of money each customer has spent. The table includes details of customers who meet the criteria specified in the business question, such as Amy Marsh, Tabitha Graves, Christopher Campbell, Sandra Jacobs, Pamela Brooks, and many others.")
+    # st.markdown("The data table returned provides information about regular customers aged over 50 who have spent more than 15000. It includes columns such as Customer_ID, Customer_Name, Age, and Total_Spent. The table consists of 780 rows, each representing a different customer. The Customer_ID column contains unique identifiers for each customer. The Customer_Name column displays the names of the customers. The Age column indicates the age of each customer. The Total_Spent column shows the amount of money each customer has spent. The table includes details of customers who meet the criteria specified in the business question, such as Amy Marsh, Tabitha Graves, Christopher Campbell, Sandra Jacobs, Pamela Brooks, and many others.")
+    st.markdown("""
+The data table returned provides information on the sales performance of different stores for this year and the previous year. The table includes columns such as STORE_ID, STORE_NAME, SALES_TY (sales for this year), and SALES_LY (sales for the previous year).\n\n
+Looking at the data, we can observe that the sales for most stores vary between this year and the previous year. Some stores have seen an increase in sales, while others have experienced a decrease.\n\n
+For example, stores like BRISTOL SUPERSTORE, CWMBRAN, and CARDIFF have seen an increase in sales this year compared to the previous year. On the other hand, stores like NEWPORT, CRIBBS CAUSEWAY, and SWANSEA have shown a decrease in sales.\n\n
+It is also interesting to note that some stores have had significant changes in sales performance. For instance, stores like West End New, Budapest Arena Plaza, and Arkad Budapest have experienced a significant increase in sales this year compared to the previous year. Conversely, stores like Budapest Vaci Utca and Gyor Arkad have seen a significant decrease in sales.\n\n
+Overall, the data table provides a comparison of sales performance across all stores for this year against the previous year, highlighting the varying trends in sales for different stores.
+    """)
     st.dataframe(result, height=300)
 
 # with col[1]:
