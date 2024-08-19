@@ -80,7 +80,7 @@ def store_manager_app():
     </h4>
     """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
 
     selected_query = st.selectbox("Select a query", list(queries.keys()))
 
