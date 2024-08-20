@@ -70,7 +70,7 @@ def store_manager_app():
 
     st.markdown(f"""
     <h4 style="background-color: {CLAIRE_DEEP_PURPLE}; color: white; padding: 10px;">
-        Simulate a Store
+        Store Manager App
     </h4>
     """, unsafe_allow_html=True)
 
